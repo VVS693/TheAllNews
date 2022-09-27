@@ -145,5 +145,5 @@ document.getElementById("pagination").addEventListener("click", (el) => {
     getNews(newsApiKey, currentPage, category)
   }
 })
-
+// hfifi3hfio3hifohh3io2fhoih3f
 
