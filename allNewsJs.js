@@ -146,3 +146,4 @@ document.getElementById("pagination").addEventListener("click", (el) => {
   }
 })
 
+
