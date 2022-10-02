@@ -6,25 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheAllNews</title>
     <link rel="stylesheet" href="allNewsStyles.css">
+    <link rel="stylesheet" href="node_modules\bootstrap-icons\font\bootstrap-icons.css">
 </head>
 <body>
     <div class="container">
         <header>
             <div class="title">
                 <div class="dataToday" id="dataToday">Tuesday, September 20, 2022</div>
-                <h1>THE ALL NEWS</h1>
+                <h1><a href="#" id="ini">THE ALL NEWS</a></h1>
                 <div class="weather" id="weather">
-                    <img src="" alt="" id = "iconWeather" class="iconWeather">
+                    <img src="#" alt="#" id = "iconWeather" class="iconWeather">
                     <div class="tempCurrent" id="tempCurrent"></div> 
                     <div class="tempHighLow" id="tempHighLow"></div>
                 </div>
             </div>
             
-            <nav>
+            <nav class="nav">
+                <div class="topmenu2">
+                    <div class="topmenu2Left">
+                        <!-- <a href="#"><img src="./svg/menu-svgrepo-com4.svg" alt="#" class="menuIcon" id="homeIcon"></a>  -->
+                        <a href="#"><i class="homeIcon bi bi-list" id="homeIcon"></i></a> 
+                        <!-- <a href="#"><img src="./svg/search-svgrepo-com2.svg" alt="#" class="menuIcon search" id="searchIcon"></a> -->
+                        <!-- <a href="#"><i class="searchIcon bi bi-search" id="searchIcon"></i></a> -->
+                    </div>
+                    <div class="dataToday2" id="dataToday2">Tuesday, September 20, 2022</div>
+                </div>
                 <ul class="topmenu" id="topmenu">
                     <li><a href="#">Home</a></li>
-                    <li class="submenuCountryBtn"><a href="#">Country</a>
-                        <ul class="submenuCountryContent">
+                    <!-- <li><a href="#"><i class="bi bi-house-door"></i></a></li> -->
+                    <li class="submenuCountryBtn"><a href="#" id="submenuCountryBtn">Countries<i class="bi bi-caret-down-fill"></i></a>
+                    <!-- <li class="submenuCountryBtn"><a href="#" id="submenuCountryBtn">Country</a> -->
+                        <ul class="submenuCountryContent" id="submenuCountryContent">
+                            <li><a href="#">Countries</a></li>
                             <li><a href="#">Russia</a></li>
                             <li><a href="#">U.S.</a></li>
                             <li><a href="#">Canada</a></li>
@@ -40,6 +53,7 @@
                             <li><a href="#">Australia</a></li>
                         </ul>
                     </li>
+                    <li><a href="#">Top</a></li>
                     <li><a href="#">World</a></li>
                     <li><a href="#">Politics</a></li>
                     <li><a href="#">Business</a></li>
@@ -54,30 +68,39 @@
             </nav>
         </header>
 
+        <div class="categoryAndSearch">
+            <h2 class="categoryName" id="categoryName">Entertainment</h2>
+            <div>
+                <input class="formSearch" id="searchForm" type="search" placeholder="SEARCH">
+                <i class="bi bi-search" id="search"></i>
+            </div>
+        </div>
+
         <main class="mainNews" id="mainNews">
 
-            <!-- <div class="newsItem" id="newsItem">
+            <div class="newsItem" id="newsItem">
                 <p class="newsData" id="newsData">Sept. 22, 2022</p>
                 <div class="newsBlock" id="newsBlock">
-                    <div class="newsblock2">
-                        <img src="https://i.insider.com/6270ef9ffacd1e0019fba3c4?format=jpeg" alt="" class="newsImage" id="newsImage">
-                        <h2 class="newsTitle" id="newsTitle">Kris Jenner says she 'kinda forgot' that she had a condo in Beverly Hills, and when she visited the
-                            fridge was filled with old frozen beans and alcohol</h2>
-                    </div>
+                    <img src="https://i.insider.com/6270ef9ffacd1e0019fba3c4?format=jpeg" alt="" class="newsImage" id="newsImage">
+                    <h2 class="newsTitle" id="newsTitle"><a href="#">Kris Jenner says she 'kinda forgot' that she had a condo in Beverly Hills, and when she visited the
+                        fridge was filled with old frozen beans and alcohol</a></h2>
                     <p class="newsDescription" id="newsDescription">Kris Jenner and Khloé Kardashian visited Jenner's Beverly Hills condo, which had a fridge fully
                         stocked with champagne.</p>
+                    <p class="newsData2">Sept. 22, 2022</p>
                 </div>
-            </div> -->
+            </div>
 
         </main>
 
         <nav>
             <div class="pagination" id="pagination">
-                <a href="#" id="previous">Previous</a>
+                <!-- <a href="#" id="previous">Previous</a> -->
+                <a href="#"><i class="bi bi-chevron-left" id="previous"></i></a>
                 <div id="currentPage">1</div>
                 <div>of</div>
                 <div id="lastPage">10</div>
-                <a href="#" id="next">Next</a>
+                <!-- <a href="#" id="next">Next</a> -->
+                <a href="#"><i class="bi bi-chevron-right" id="next"></i></a>
             </div>
         </nav>
      

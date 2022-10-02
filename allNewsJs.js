@@ -1,5 +1,7 @@
 
-document.getElementById("dataToday").innerText = new Date().toLocaleString(
+document.getElementById("dataToday").innerText = 
+document.getElementById("dataToday2").innerText = 
+new Date().toLocaleString(
   "en-US",
   {
     year: "numeric",
@@ -60,8 +62,11 @@ function weatherByIp(func) {
 
 weatherByIp(getWeather)
 
-function getNews(newsApiKey, currentPage, category) {
-    const newsUrl = `https://newsdata.io/api/1/news?apikey=${newsApiKey}&country=us&language=en&page=${currentPage}&category=${category}`
+function getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ) {
+    const newsUrl =
+      searchQ != ""
+        ? `https://newsdata.io/api/1/news?apikey=${newsApiKey}&q=${searchQ}&country=${currentCountry}&language=${language}&page=${currentPage}&category=${category}`
+        : `https://newsdata.io/api/1/news?apikey=${newsApiKey}&country=${currentCountry}&language=${language}&page=${currentPage}&category=${category}`;
     console.log(newsUrl)
       let allNews = fetch(newsUrl)
       allNews
@@ -70,37 +75,63 @@ function getNews(newsApiKey, currentPage, category) {
           console.log(response)
           newsArr = []
           document.getElementById("mainNews").replaceChildren()
+
+          if (category == "Top") {
+            document.getElementById("categoryName").innerText = "Top News"
+          } else {
+            if (category == "World") {
+              document.getElementById("categoryName").innerText = "World News"
+            } else {
+              document.getElementById("categoryName").innerText = category
+            }
+            }
+
           for (let i = 0; i < response.results.length; i++) {
             newsArr[i] = document.createElement('div')
             newsArr[i].className = "newsItem"
             let newsData = document.createElement('p')
             newsData.className = "newsData"
-            newsData.innerText = new Date(response.results[i].pubDate).toLocaleString("en-US", {dateStyle: "medium"})
+            let newsData2 = document.createElement('p')
+            newsData2.className = "newsData2"
+            newsData.innerText =  newsData2.innerText = new Date(response.results[i].pubDate).toLocaleString("en-US", {dateStyle: "medium"})
+            
             let newsBlock = document.createElement('div')
             newsBlock.className = "newsBlock"
             let newsTitle = document.createElement('h2')
             newsTitle.className = "newsTitle"
-            newsTitle.innerText = response.results[i].title
+            let newsTitleLink = document.createElement('a')
+            newsTitleLink.target = "_blank"
+            newsTitleLink.href = response.results[i].link !== "null" ? response.results[i].link : "#"
+            newsTitleLink.innerText = response.results[i].title
+            newsTitle.append(newsTitleLink)
             let newsDescription = document.createElement('p')
             newsDescription.className = "newsDescription"
             newsDescription.innerText = response.results[i].description
-            let newsblock2 = document.createElement('div')
-            newsblock2.className = "newsblock2"
+
             newsArr[i].append(newsData)
+            let newsImage = document.createElement('img')
+            newsImage.className = "newsImage"
+            if (response.results[i].image_url == null) {
+              newsImage.style.display = "none"
+            }
             if (response.results[i].image_url !== null) {
-              let newsImage = document.createElement('img')
-              newsImage.className = "newsImage"
+              newsBlock.append(newsImage)
               newsImage.src = response.results[i].image_url
-                newsImage.onload = () => {
-                  if (newsImage.width >= 200) {
-                  newsblock2.append(newsImage)
-                  }
+              newsImage.onload = () => {
+                if (newsImage.naturalWidth <= 240) {
+                  newsImage.style.display = "none"
                 }
               }
-              newsblock2.append(newsTitle)
-              newsBlock.append(newsblock2)
-            newsArr[i].append(newsBlock)
+              newsImage.onerror = () => {
+                newsImage.style.display = "none"
+              }
+            }
+
+            newsBlock.append(newsTitle)
             newsBlock.append(newsDescription)
+            newsBlock.append(newsData2)
+            newsArr[i].append(newsBlock)
+            
             document.getElementById("mainNews").append(newsArr[i])
           }
           
@@ -120,29 +151,130 @@ function getNews(newsApiKey, currentPage, category) {
       })
 }
 
-let currentPage = 0
-let category = "top"
-let newsArr = []
+const countryList = [
+  [
+    "Country", 
+    "Russia",
+    "U.S.",
+    "Canada",
+    "U.K.",
+    "Germany",
+    "France",
+    "Italy",
+    "Spain",
+    "Portugal",
+    "Turkey",
+    "Thailand",
+    "China",
+    "Australia",
+  ],
+  [
+    "ru,us,ca,gb,de",
+    "ru",
+    "us",
+    "ca",
+    "gb",
+    "de",
+    "fr",
+    "it",
+    "es",
+    "pt",
+    "tr",
+    "th",
+    "cn",
+    "au",
+  ],
+];
 
-getNews(newsApiKey, currentPage, category)
+let currentPage = 0
+let currentCountry = "ru,us,ca,gb,de"
+let category = "Top"
+let newsArr = []
+let language = "en"
+let searchQ = ""
+
+function initialization() {
+  currentPage = 0
+  currentCountry = "ru,us,ca,gb,de"
+  category = "Top"
+  newsArr = []
+  language = "en"
+  searchQ = ""
+  document.getElementById("submenuCountryBtn").innerHTML =
+  "Countries" + `<i class="bi bi-caret-down-fill"></i>`
+  getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
+}
+
+initialization()
 
 document.getElementById("topmenu").addEventListener("click", (el) => {
-  if (el.target.innerText !== "Country") {
+  if (el.path[1].className !== "submenuCountryBtn" && 
+    el.path[2].className !== "submenuCountryContent show" && 
+    el.path[0].className !== "bi bi-caret-down-fill" &&
+    el.target.innerText !== "Home") {
     category = el.target.innerText
     currentPage = 0
-    getNews(newsApiKey, currentPage, category)
+    searchQ = ""
+    document.getElementById("searchForm").value = ""
+    getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
   }
-  console.log(category)
+  if (el.path[2].className == "submenuCountryContent show") {
+    currentCountry = countryList[1][countryList[0].indexOf(el.target.innerText)]
+    document.getElementById("submenuCountryBtn").innerHTML =
+    el.target.innerText + `<i class="bi bi-caret-down-fill"></i>`
+    currentPage = 0
+    searchQ = ""
+    document.getElementById("searchForm").value = ""
+    language = currentCountry == "ru" ? "ru" : "en"
+    getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
+  }
+  if (el.target.innerText == "Home") {
+    initialization()
+  }
 })
 
 document.getElementById("pagination").addEventListener("click", (el) => {
-  if (el.target.innerText == "Next") {
+  if (el.target.id == "next") {
     currentPage++
-    getNews(newsApiKey, currentPage, category)
+    getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
   }
-  if (el.target.innerText == "Previous") {
+  if (el.target.id == "previous") {
     currentPage--
-    getNews(newsApiKey, currentPage, category)
+    getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
   }
 })
 
+document.getElementById("search").addEventListener("click", () => {
+  let searchText = document.getElementById("searchForm").value
+  searchQ = searchText.replace(/\s+/g, " ").trim().replaceAll(" ", "%20AND%20")
+  console.log(searchQ)
+  getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
+})
+
+document.getElementById("ini").addEventListener("click", () => initialization())
+
+document.getElementById("submenuCountryBtn").addEventListener("click", (el) => {
+  document.getElementById("submenuCountryContent").classList.toggle("show")
+})
+document.addEventListener("click", (el) => {
+  if (el.target.id !== "submenuCountryBtn" && document.getElementById("submenuCountryContent").classList.contains("show")) {
+    document.getElementById("submenuCountryContent").classList.remove("show")
+  }
+})
+
+
+document.getElementById("homeIcon").addEventListener("click", () => {
+  document.getElementById("topmenu").classList.toggle("show")
+})
+document.addEventListener("click", (el) => {
+  if (el.target.id !== "homeIcon" && el.target.id !== "submenuCountryBtn" && document.getElementById("topmenu").classList.contains("show")) {
+    document.getElementById("topmenu").classList.remove("show")
+  }
+})
+
+window.addEventListener("resize", (el) => {
+  if (el.target.innerWidth > 800) {
+    document.getElementById("topmenu").classList.remove("show")
+    document.getElementById("submenuCountryContent").classList.remove("show")
+  }
+})
