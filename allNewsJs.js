@@ -1,4 +1,4 @@
-NProgress.configure({easing: 'ease', speed: 600})
+NProgress.configure({easing: 'ease', speed: 800})
 
 document.getElementById("dataToday").innerText = 
 document.getElementById("dataToday2").innerText = 
