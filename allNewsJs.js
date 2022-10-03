@@ -208,8 +208,9 @@ function initialization() {
 initialization()
 
 document.getElementById("topmenu").addEventListener("click", (el) => {
+  console.log(el.path[2].className)
   if (el.path[1].className !== "submenuCountryBtn" && 
-    el.path[2].className !== "submenuCountryContent show" && 
+    el.path[2].className !== "submenuCountryContent show animeSubMenuReverse" && 
     el.path[0].className !== "bi bi-caret-down-fill" &&
     el.target.innerText !== "Home") {
     category = el.target.innerText
@@ -218,7 +219,7 @@ document.getElementById("topmenu").addEventListener("click", (el) => {
     document.getElementById("searchForm").value = ""
     getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
   }
-  if (el.path[2].className == "submenuCountryContent show") {
+  if (el.path[2].className == "submenuCountryContent show animeSubMenuReverse") {
     currentCountry = countryList[1][countryList[0].indexOf(el.target.innerText)]
     document.getElementById("submenuCountryBtn").innerHTML =
     el.target.innerText + `<i class="bi bi-caret-down-fill"></i>`
@@ -248,28 +249,67 @@ document.getElementById("search").addEventListener("click", () => {
   let searchText = document.getElementById("searchForm").value
   searchQ = searchText.replace(/\s+/g, " ").trim().replaceAll(" ", "%20AND%20")
   console.log(searchQ)
+  currentPage = 0
   getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
 })
 
+
 document.getElementById("ini").addEventListener("click", () => initialization())
 
-document.getElementById("submenuCountryBtn").addEventListener("click", (el) => {
-  document.getElementById("submenuCountryContent").classList.toggle("show")
+document.getElementById("submenu").addEventListener("click", () => {
+    if (!document.getElementById("submenuCountryContent").classList.contains("show")) {
+      document.getElementById("submenuCountryContent").classList.toggle("show")
+      document.getElementById("submenuCountryContent").classList.add("animeSubMenuStart")
+      document.getElementById("submenuCountryContent").addEventListener("animationend", () => {
+        document.getElementById("submenuCountryContent").classList.remove("animeSubMenuStart")
+      }, {once: true})
+    } else {
+      document.getElementById("submenuCountryContent").classList.add("animeSubMenuReverse")
+      document.getElementById("submenuCountryContent").addEventListener("animationend", () => {
+        document.getElementById("submenuCountryContent").classList.remove("animeSubMenuReverse")
+        document.getElementById("submenuCountryContent").classList.toggle("show")
+      },  {once: true})
+    }
 })
 document.addEventListener("click", (el) => {
-  if (el.target.id !== "submenuCountryBtn" && document.getElementById("submenuCountryContent").classList.contains("show")) {
+  if (el.target.id !== "submenuCountryBtn" && 
+      el.target.id !== "caret" && 
+      document.getElementById("submenuCountryContent").classList.contains("show")) {
+    document.getElementById("submenuCountryContent").classList.add("animeSubMenuReverse")
+    document.getElementById("submenuCountryContent").addEventListener("animationend", () => {
+    document.getElementById("submenuCountryContent").classList.remove("animeSubMenuReverse")
     document.getElementById("submenuCountryContent").classList.remove("show")
+    }, {once: true})
   }
 })
 
 
 document.getElementById("homeIcon").addEventListener("click", () => {
-  document.getElementById("topmenu").classList.toggle("show")
+  if (!document.getElementById("topmenu").classList.contains("show")) {
+    document.getElementById("topmenu").classList.toggle("show")
+    document.getElementById("topmenu").classList.add("animeSideMenuStart")
+    document.getElementById("topmenu").addEventListener("animationend", () => {
+      document.getElementById("topmenu").classList.remove("animeSideMenuStart")
+    }, {once: true})
+  } else {
+    document.getElementById("topmenu").classList.add("animeSideMenuReverse")
+    document.getElementById("topmenu").addEventListener("animationend", () => {
+      document.getElementById("topmenu").classList.remove("animeSideMenuReverse")
+      document.getElementById("topmenu").classList.toggle("show")
+    },  {once: true})
+  }
 })
 document.addEventListener("click", (el) => {
-  if (el.target.id !== "homeIcon" && el.target.id !== "submenuCountryBtn" && document.getElementById("topmenu").classList.contains("show")) {
-    document.getElementById("topmenu").classList.remove("show")
-  }
+if (el.target.id !== "homeIcon" && 
+    el.target.id !== "submenuCountryBtn" && 
+    el.target.id !== "caret" && 
+    document.getElementById("topmenu").classList.contains("show")) {
+  document.getElementById("topmenu").classList.add("animeSideMenuReverse")
+  document.getElementById("topmenu").addEventListener("animationend", () => {
+  document.getElementById("topmenu").classList.remove("animeSideMenuReverse")
+  document.getElementById("topmenu").classList.remove("show")
+  }, {once: true})
+}
 })
 
 window.addEventListener("resize", (el) => {

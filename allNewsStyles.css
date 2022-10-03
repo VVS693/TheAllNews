@@ -123,6 +123,9 @@
 .submenuCountryBtn > a {
     width: 75px;
 }
+.submenuCountryBtn a i {
+    font-size: 10px;
+}
 .submenuCountryContent {
     position: absolute;
     display: none;
@@ -150,6 +153,14 @@
     }
     to {
     opacity: 0.8;
+    }
+}
+@keyframes sideMenu {
+    from {
+    left: -160px;
+    }
+    to {
+    left: 0px;
     }
 }
 
@@ -413,9 +424,6 @@
     .topmenu2 {
         display: none;
     }
-    .show {
-        display: none;
-    }
 }
 
 @media (max-width: 600px) {
@@ -458,6 +466,20 @@
 .show {
     display: block;
     z-index: 100;
+    /* animation: submenuSlow 0.3s linear; */
+}
+
+.animeSubMenuStart {
     animation: submenuSlow 0.3s linear;
+}
+.animeSubMenuReverse {
+    animation: submenuSlow 0.3s linear reverse;
+}
+
+.animeSideMenuStart {
+    animation: sideMenu 0.4s linear;
+}
+.animeSideMenuReverse {
+    animation: sideMenu 0.4s linear reverse;
 }
 
