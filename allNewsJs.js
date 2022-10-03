@@ -1,3 +1,4 @@
+NProgress.configure({easing: 'ease', speed: 600})
 
 document.getElementById("dataToday").innerText = 
 document.getElementById("dataToday2").innerText = 
@@ -63,12 +64,13 @@ function weatherByIp(func) {
 weatherByIp(getWeather)
 
 function getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ) {
+  NProgress.start()
     const newsUrl =
       searchQ != ""
         ? `https://newsdata.io/api/1/news?apikey=${newsApiKey}&q=${searchQ}&country=${currentCountry}&language=${language}&page=${currentPage}&category=${category}`
         : `https://newsdata.io/api/1/news?apikey=${newsApiKey}&country=${currentCountry}&language=${language}&page=${currentPage}&category=${category}`;
     console.log(newsUrl)
-      let allNews = fetch(newsUrl)
+      const allNews = fetch(newsUrl)
       allNews
       .then(response => response.json())
       .then(response => {
@@ -149,6 +151,7 @@ function getNews(newsApiKey, currentPage, category, currentCountry, language, se
           document.getElementById("lastPage").innerText = lastPage
           document.getElementById("currentPage").innerText = currentPage + 1
       })
+      NProgress.done()
 }
 
 const countryList = [
