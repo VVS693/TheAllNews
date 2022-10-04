@@ -321,3 +321,8 @@ window.addEventListener("resize", (el) => {
     document.getElementById("submenuCountryContent").classList.remove("show")
   }
 })
+
+document.addEventListener('touchstart', () => {});
+document.addEventListener('touchend', () => {});
+document.addEventListener('touchcancel', () => {});
+document.addEventListener('touchmove', () => {});
