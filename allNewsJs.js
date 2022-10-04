@@ -235,7 +235,7 @@ document.getElementById("topmenu").addEventListener("click", (el) => {
   if (el.target.innerText == "Home") {
     initialization()
   }
-})
+}, false)
 
 document.getElementById("pagination").addEventListener("click", (el) => {
   if (el.target.id == "next") {
@@ -273,7 +273,7 @@ document.getElementById("submenu").addEventListener("click", () => {
         document.getElementById("submenuCountryContent").classList.toggle("show")
       },  {once: true})
     }
-})
+}, false)
 document.addEventListener("click", (el) => {
   if (el.target.id !== "submenuCountryBtn" && 
       el.target.id !== "caret" && 
