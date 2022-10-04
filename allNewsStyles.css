@@ -170,7 +170,8 @@
 .categoryAndSearch {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
+    /* align-items: flex-end; */
     height: 45px;
     padding-left: 20px;
     padding-right: 20px;
