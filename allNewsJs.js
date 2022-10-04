@@ -156,7 +156,7 @@ function getNews(newsApiKey, currentPage, category, currentCountry, language, se
 
 const countryList = [
   [
-    "Country", 
+    "Countries", 
     "Russia",
     "U.S.",
     "Canada",
@@ -189,140 +189,220 @@ const countryList = [
   ],
 ];
 
-let currentPage = 0
-let currentCountry = "ru,us,ca,gb,de"
-let category = "Top"
-let newsArr = []
-let language = "en"
-let searchQ = ""
+let currentPage = 0;
+let currentCountry = "ru,us,ca,gb,de";
+let category = "Top";
+let newsArr = [];
+let language = "en";
+let searchQ = "";
 
 function initialization() {
-  currentPage = 0
-  currentCountry = "ru,us,ca,gb,de"
-  category = "Top"
-  newsArr = []
-  language = "en"
-  searchQ = ""
+  currentPage = 0;
+  currentCountry = "ru,us,ca,gb,de";
+  category = "Top";
+  newsArr = [];
+  language = "en";
+  searchQ = "";
+  document.getElementById("searchForm").value = "";
   document.getElementById("submenuCountryBtn").innerHTML =
-  "Countries" + `<i class="bi bi-caret-down-fill"></i>`
-  getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
+    "Countries" + `<i class="bi bi-caret-down-fill"></i>`;
+  getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ);
 }
 
 initialization()
 
 document.getElementById("topmenu").addEventListener("click", (el) => {
-  console.log(el.path[2].className)
-  if (el.path[1].className !== "submenuCountryBtn" && 
-    el.path[2].className !== "submenuCountryContent show animeSubMenuReverse" && 
-    el.path[0].className !== "bi bi-caret-down-fill" &&
-    el.target.innerText !== "Home") {
-    category = el.target.innerText
-    currentPage = 0
-    searchQ = ""
-    document.getElementById("searchForm").value = ""
-    getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
+  if (
+    !countryList[0].includes(el.target.innerText) &&
+    el.target.className !== "bi bi-caret-down-fill" &&
+    el.target.innerText !== "Home"
+  ) {
+    category = el.target.innerText;
+    currentPage = 0;
+    searchQ = "";
+    document.getElementById("searchForm").value = "";
+    getNews(
+      newsApiKey,
+      currentPage,
+      category,
+      currentCountry,
+      language,
+      searchQ
+    );
   }
-  if (el.path[2].className == "submenuCountryContent show animeSubMenuReverse") {
-    currentCountry = countryList[1][countryList[0].indexOf(el.target.innerText)]
+  if (
+    countryList[0].includes(el.target.innerText) &&
+    el.target.id !== "submenuCountryBtn"
+  ) {
+    currentCountry =
+      countryList[1][countryList[0].indexOf(el.target.innerText)];
     document.getElementById("submenuCountryBtn").innerHTML =
-    el.target.innerText + `<i class="bi bi-caret-down-fill"></i>`
-    currentPage = 0
-    searchQ = ""
-    document.getElementById("searchForm").value = ""
-    language = currentCountry == "ru" ? "ru" : "en"
-    getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
+      el.target.innerText + `<i class="bi bi-caret-down-fill"></i>`;
+    currentPage = 0;
+    searchQ = "";
+    document.getElementById("searchForm").value = "";
+    language = currentCountry == "ru" ? "ru" : "en";
+    getNews(
+      newsApiKey,
+      currentPage,
+      category,
+      currentCountry,
+      language,
+      searchQ
+    );
   }
   if (el.target.innerText == "Home") {
-    initialization()
+    initialization();
   }
-}, false)
+});
 
 document.getElementById("pagination").addEventListener("click", (el) => {
   if (el.target.id == "next") {
-    currentPage++
-    getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
+    currentPage++;
+    getNews(
+      newsApiKey,
+      currentPage,
+      category,
+      currentCountry,
+      language,
+      searchQ
+    );
   }
   if (el.target.id == "previous") {
-    currentPage--
-    getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
+    currentPage--;
+    getNews(
+      newsApiKey,
+      currentPage,
+      category,
+      currentCountry,
+      language,
+      searchQ
+    );
   }
-})
+});
 
 document.getElementById("search").addEventListener("click", () => {
-  let searchText = document.getElementById("searchForm").value
-  searchQ = searchText.replace(/\s+/g, " ").trim().replaceAll(" ", "%20AND%20")
-  console.log(searchQ)
-  currentPage = 0
-  getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ)
-})
+  let searchText = document.getElementById("searchForm").value;
+  searchQ = searchText.replace(/\s+/g, " ").trim().replaceAll(" ", "%20AND%20");
+  console.log(searchQ);
+  currentPage = 0;
+  getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ);
+});
 
 
 document.getElementById("ini").addEventListener("click", () => initialization())
 
 document.getElementById("submenu").addEventListener("click", () => {
-    if (!document.getElementById("submenuCountryContent").classList.contains("show")) {
-      document.getElementById("submenuCountryContent").classList.toggle("show")
-      document.getElementById("submenuCountryContent").classList.add("animeSubMenuStart")
-      document.getElementById("submenuCountryContent").addEventListener("animationend", () => {
-        document.getElementById("submenuCountryContent").classList.remove("animeSubMenuStart")
-      }, {once: true})
-    } else {
-      document.getElementById("submenuCountryContent").classList.add("animeSubMenuReverse")
-      document.getElementById("submenuCountryContent").addEventListener("animationend", () => {
-        document.getElementById("submenuCountryContent").classList.remove("animeSubMenuReverse")
-        document.getElementById("submenuCountryContent").classList.toggle("show")
-      },  {once: true})
-    }
-}, false)
-document.addEventListener("click", (el) => {
-  if (el.target.id !== "submenuCountryBtn" && 
-      el.target.id !== "caret" && 
-      document.getElementById("submenuCountryContent").classList.contains("show")) {
-    document.getElementById("submenuCountryContent").classList.add("animeSubMenuReverse")
-    document.getElementById("submenuCountryContent").addEventListener("animationend", () => {
-    document.getElementById("submenuCountryContent").classList.remove("animeSubMenuReverse")
-    document.getElementById("submenuCountryContent").classList.remove("show")
-    }, {once: true})
+  if (
+    !document.getElementById("submenuCountryContent").classList.contains("show")
+  ) {
+    document.getElementById("submenuCountryContent").classList.toggle("show");
+    document
+      .getElementById("submenuCountryContent")
+      .classList.add("animeSubMenuStart");
+    document.getElementById("submenuCountryContent").addEventListener(
+      "animationend",
+      () => {
+        document
+          .getElementById("submenuCountryContent")
+          .classList.remove("animeSubMenuStart");
+      },
+      { once: true }
+    );
+  } else {
+    document
+      .getElementById("submenuCountryContent")
+      .classList.add("animeSubMenuReverse");
+    document.getElementById("submenuCountryContent").addEventListener(
+      "animationend",
+      () => {
+        document
+          .getElementById("submenuCountryContent")
+          .classList.remove("animeSubMenuReverse");
+        document
+          .getElementById("submenuCountryContent")
+          .classList.toggle("show");
+      },
+      { once: true }
+    );
   }
-})
+});
+document.addEventListener("click", (el) => {
+  if (
+    el.target.id !== "submenuCountryBtn" &&
+    el.target.className !== "bi bi-caret-down-fill" &&
+    document.getElementById("submenuCountryContent").classList.contains("show")
+  ) {
+    document
+      .getElementById("submenuCountryContent")
+      .classList.add("animeSubMenuReverse");
+    document.getElementById("submenuCountryContent").addEventListener(
+      "animationend",
+      () => {
+        document
+          .getElementById("submenuCountryContent")
+          .classList.remove("animeSubMenuReverse");
+        document
+          .getElementById("submenuCountryContent")
+          .classList.remove("show");
+      },
+      { once: true }
+    );
+  }
+});
 
 
 document.getElementById("homeIcon").addEventListener("click", () => {
   if (!document.getElementById("topmenu").classList.contains("show")) {
-    document.getElementById("topmenu").classList.toggle("show")
-    document.getElementById("topmenu").classList.add("animeSideMenuStart")
-    document.getElementById("topmenu").addEventListener("animationend", () => {
-      document.getElementById("topmenu").classList.remove("animeSideMenuStart")
-    }, {once: true})
+    document.getElementById("topmenu").classList.toggle("show");
+    document.getElementById("topmenu").classList.add("animeSideMenuStart");
+    document.getElementById("topmenu").addEventListener(
+      "animationend",
+      () => {
+        document
+          .getElementById("topmenu")
+          .classList.remove("animeSideMenuStart");
+      },
+      { once: true }
+    );
   } else {
-    document.getElementById("topmenu").classList.add("animeSideMenuReverse")
-    document.getElementById("topmenu").addEventListener("animationend", () => {
-      document.getElementById("topmenu").classList.remove("animeSideMenuReverse")
-      document.getElementById("topmenu").classList.toggle("show")
-    },  {once: true})
+    document.getElementById("topmenu").classList.add("animeSideMenuReverse");
+    document.getElementById("topmenu").addEventListener(
+      "animationend",
+      () => {
+        document
+          .getElementById("topmenu")
+          .classList.remove("animeSideMenuReverse");
+        document.getElementById("topmenu").classList.toggle("show");
+      },
+      { once: true }
+    );
   }
-})
+});
 document.addEventListener("click", (el) => {
-if (el.target.id !== "homeIcon" && 
-    el.target.id !== "submenuCountryBtn" && 
-    el.target.id !== "caret" && 
-    document.getElementById("topmenu").classList.contains("show")) {
-  document.getElementById("topmenu").classList.add("animeSideMenuReverse")
-  document.getElementById("topmenu").addEventListener("animationend", () => {
-  document.getElementById("topmenu").classList.remove("animeSideMenuReverse")
-  document.getElementById("topmenu").classList.remove("show")
-  }, {once: true})
-}
-})
+  if (
+    el.target.id !== "homeIcon" &&
+    el.target.id !== "submenuCountryBtn" &&
+    el.target.className !== "bi bi-caret-down-fill" &&
+    document.getElementById("topmenu").classList.contains("show")
+  ) {
+    document.getElementById("topmenu").classList.add("animeSideMenuReverse");
+    document.getElementById("topmenu").addEventListener(
+      "animationend",
+      () => {
+        document
+          .getElementById("topmenu")
+          .classList.remove("animeSideMenuReverse");
+        document.getElementById("topmenu").classList.remove("show");
+      },
+      { once: true }
+    );
+  }
+});
 
 window.addEventListener("resize", (el) => {
   if (el.target.innerWidth > 800) {
-    document.getElementById("topmenu").classList.remove("show")
-    document.getElementById("submenuCountryContent").classList.remove("show")
+    document.getElementById("topmenu").classList.remove("show");
+    document.getElementById("submenuCountryContent").classList.remove("show");
   }
-})
-
-document.addEventListener('touchstart', () => {});
-document.addEventListener('touchend', () => {});
-document.addEventListener('touchcancel', () => {});
-document.addEventListener('touchmove', () => {});
+});
