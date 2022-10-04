@@ -189,6 +189,20 @@ const countryList = [
   ],
 ];
 
+const categoryList = [
+  "Top",
+  "World",
+  "Politics",
+  "Business",
+  "Technology",
+  "Science",
+  "Environment",
+  "Entertainment",
+  "Health",
+  "Food",
+  "Sports"
+]
+
 let currentPage = 0;
 let currentCountry = "ru,us,ca,gb,de";
 let category = "Top";
@@ -212,11 +226,7 @@ function initialization() {
 initialization()
 
 document.getElementById("topmenu").addEventListener("click", (el) => {
-  if (
-    !countryList[0].includes(el.target.innerText) &&
-    el.target.className !== "bi bi-caret-down-fill" &&
-    el.target.innerText !== "Home"
-  ) {
+  if (categoryList.includes(el.target.innerText)) {
     category = el.target.innerText;
     currentPage = 0;
     searchQ = "";
@@ -406,3 +416,57 @@ window.addEventListener("resize", (el) => {
     document.getElementById("submenuCountryContent").classList.remove("show");
   }
 });
+
+// document.addEventListener("click", (el) => {
+//   console.log(el.target.id)
+//   console.log(el.target)
+// })
+
+
+
+
+
+// document.getElementById("topmenu").addEventListener("click", (el) => {
+//   if (
+//     !countryList[0].includes(el.target.innerText) &&
+//     el.target.className !== "bi bi-caret-down-fill" &&
+//     el.target.innerText !== "Home"
+//   ) {
+//     category = el.target.innerText;
+//     currentPage = 0;
+//     searchQ = "";
+//     document.getElementById("searchForm").value = "";
+//     getNews(
+//       newsApiKey,
+//       currentPage,
+//       category,
+//       currentCountry,
+//       language,
+//       searchQ
+//     );
+//   }
+//   if (
+//     countryList[0].includes(el.target.innerText) &&
+//     el.target.id !== "submenuCountryBtn"
+//   ) {
+//     currentCountry =
+//       countryList[1][countryList[0].indexOf(el.target.innerText)];
+//     document.getElementById("submenuCountryBtn").innerHTML =
+//       el.target.innerText + `<i class="bi bi-caret-down-fill"></i>`;
+//     currentPage = 0;
+//     searchQ = "";
+//     document.getElementById("searchForm").value = "";
+//     language = currentCountry == "ru" ? "ru" : "en";
+//     getNews(
+//       newsApiKey,
+//       currentPage,
+//       category,
+//       currentCountry,
+//       language,
+//       searchQ
+//     );
+//   }
+//   if (el.target.innerText == "Home") {
+//     initialization();
+//   }
+// });
