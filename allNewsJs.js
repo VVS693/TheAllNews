@@ -95,7 +95,11 @@ function getNews(newsApiKey, currentPage, category, currentCountry, language, se
             newsData.className = "newsData"
             let newsData2 = document.createElement('p')
             newsData2.className = "newsData2"
-            newsData.innerText =  newsData2.innerText = new Date(response.results[i].pubDate).toLocaleString("en-US", {dateStyle: "medium"})
+            newsData.innerText = newsData2.innerText = new Date(
+              response.results[i].pubDate.replace(" ", "T")
+            ).toLocaleString("en-US", {
+              dateStyle: "medium",
+            });
             
             let newsBlock = document.createElement('div')
             newsBlock.className = "newsBlock"
