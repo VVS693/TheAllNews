@@ -1,83 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TheAllNews</title>
-    <link rel="stylesheet" href="nprogress.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="allNewsStyles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="nprogress.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="allNewsStyles.css" />
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <div class="title">
-                <div class="dataToday" id="dataToday">Tuesday, September 20, 2022</div>
-                <h1><a href="#" id="ini">The All News</a></h1>
-                <div class="weather" id="weather">
-                    <img src="#" alt="#" id = "iconWeather" class="iconWeather">
-                    <div class="tempCurrent" id="tempCurrent"></div> 
-                    <div class="tempHighLow" id="tempHighLow"></div>
-                </div>
-            </div>
-
-            <nav class="nav">
-                <div class="topmenu2">
-                    <div class="topmenu2Left">
-                        <!-- <a href="#"><img src="./svg/menu-svgrepo-com4.svg" alt="#" class="menuIcon" id="homeIcon"></a>  -->
-                        <a href="#"><i class="homeIcon bi bi-list" id="homeIcon"></i></a> 
-                        <!-- <a href="#"><img src="./svg/search-svgrepo-com2.svg" alt="#" class="menuIcon search" id="searchIcon"></a> -->
-                        <!-- <a href="#"><i class="searchIcon bi bi-search" id="searchIcon"></i></a> -->
-                    </div>
-                    <div class="dataToday2" id="dataToday2">Tuesday, September 20, 2022</div>
-                </div>
-                <ul class="topmenu" id="topmenu">
-                    <li><a href="#">Home</a></li>
-                    <li class="submenuCountryBtn" id="submenu"><a href="#" id="submenuCountryBtn">Countries<i class="bi bi-caret-down-fill" id="caret"></i></a>
-                        <ul class="submenuCountryContent" id="submenuCountryContent">
-                            <li><a href="#">Countries</a></li>
-                            <li><a href="#">Russia</a></li>
-                            <li><a href="#">U.S.</a></li>
-                            <li><a href="#">Canada</a></li>
-                            <li><a href="#">U.K.</a></li>
-                            <li><a href="#">Germany</a></li>
-                            <li><a href="#">France</a></li>
-                            <li><a href="#">Italy</a></li>
-                            <li><a href="#">Spain</a></li>
-                            <li><a href="#">Portugal</a></li>
-                            <li><a href="#">Turkey</a></li>
-                            <li><a href="#">Thailand</a></li>
-                            <li><a href="#">China</a></li>
-                            <li><a href="#">Australia</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Top</a></li>
-                    <li><a href="#">World</a></li>
-                    <li><a href="#">Politics</a></li>
-                    <li><a href="#">Business</a></li>
-                    <li><a href="#">Technology</a></li>
-                    <li><a href="#">Science</a></li>
-                    <li><a href="#">Environment</a></li>
-                    <li><a href="#">Entertainment</a></li>
-                    <li><a href="#">Health</a></li>
-                    <li><a href="#">Food</a></li>
-                    <li><a href="#">Sports</a></li>
-                </ul>
-            </nav>
-        </header>
-
-        <div class="categoryAndSearch">
-            <h2 class="categoryName" id="categoryName">Entertainment</h2>
-            <div>
-                <input class="formSearch" id="searchForm" type="search" placeholder="SEARCH">
-                <i class="bi bi-search" id="search"></i>
-            </div>
+      <header>
+        <div class="title">
+          <div class="dataToday" id="dataToday">
+            Tuesday, September 20, 2022
+          </div>
+          <h1><a href="#" id="ini">The All News</a></h1>
+          <div class="weather" id="weather">
+            <img src="#" alt="#" id="iconWeather" class="iconWeather" />
+            <div class="tempCurrent" id="tempCurrent"></div>
+            <div class="tempHighLow" id="tempHighLow"></div>
+          </div>
         </div>
 
-        <main class="mainNews" id="mainNews">
+        <nav class="nav">
+          <div class="topmenu2">
+            <div class="topmenu2Left">
+              <!-- <a href="#"><img src="./svg/menu-svgrepo-com4.svg" alt="#" class="menuIcon" id="homeIcon"></a>  -->
+              <a href="#"><i class="homeIcon bi bi-list" id="homeIcon"></i></a>
+              <!-- <a href="#"><img src="./svg/search-svgrepo-com2.svg" alt="#" class="menuIcon search" id="searchIcon"></a> -->
+              <!-- <a href="#"><i class="searchIcon bi bi-search" id="searchIcon"></i></a> -->
+            </div>
+            <div class="dataToday2" id="dataToday2">
+              Tuesday, September 20, 2022
+            </div>
+          </div>
+          <ul class="topmenu" id="topmenu">
+            <li><a href="#">Home</a></li>
+            <li class="submenuCountryBtn" id="submenu">
+              <a href="#" id="submenuCountryBtn"
+                >Countries<i class="bi bi-caret-down-fill" id="caret"></i
+              ></a>
+              <ul class="submenuCountryContent" id="submenuCountryContent">
+                <li><a href="#">Countries</a></li>
+                <li><a href="#">Russia</a></li>
+                <li><a href="#">U.S.</a></li>
+                <li><a href="#">Canada</a></li>
+                <li><a href="#">U.K.</a></li>
+                <li><a href="#">Germany</a></li>
+                <li><a href="#">France</a></li>
+                <li><a href="#">Italy</a></li>
+                <li><a href="#">Spain</a></li>
+                <li><a href="#">Portugal</a></li>
+                <li><a href="#">Turkey</a></li>
+                <li><a href="#">Thailand</a></li>
+                <li><a href="#">China</a></li>
+                <li><a href="#">Australia</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Top</a></li>
+            <li><a href="#">World</a></li>
+            <li><a href="#">Politics</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Technology</a></li>
+            <li><a href="#">Science</a></li>
+            <li><a href="#">Environment</a></li>
+            <li><a href="#">Entertainment</a></li>
+            <li><a href="#">Health</a></li>
+            <li><a href="#">Food</a></li>
+            <li><a href="#">Sports</a></li>
+          </ul>
+        </nav>
+      </header>
 
-            <!-- <div class="newsItem" id="newsItem">
+      <div class="categoryAndSearch">
+        <h2 class="categoryName" id="categoryName"></h2>
+        <div>
+          <input
+            class="formSearch"
+            id="searchForm"
+            type="search"
+            placeholder="SEARCH"
+          />
+          <i class="bi bi-search" id="search"></i>
+        </div>
+      </div>
+
+      <main class="mainNews" id="mainNews">
+        <!-- <div class="newsItem" id="newsItem">
                 <p class="newsData" id="newsData">Sept. 22, 2022</p>
                 <div class="newsBlock" id="newsBlock">
                     <img src="https://i.insider.com/6270ef9ffacd1e0019fba3c4?format=jpeg" alt="" class="newsImage" id="newsImage">
@@ -88,29 +102,21 @@
                     <p class="newsData2">Sept. 22, 2022</p>
                 </div>
             </div> -->
+      </main>
 
-        </main>
-
-        <nav>
-            <div class="pagination" id="pagination">
-                <a href="#"><i class="bi bi-chevron-left" id="previous"></i></a>
-                <div id="currentPage">1</div>
-                <div>of</div>
-                <div id="lastPage">10</div>
-                <a href="#"><i class="bi bi-chevron-right" id="next"></i></a>
-            </div>
-        </nav>
-     
-        
+      <nav>
+        <div class="pagination" id="pagination">
+          <a href="#"><i class="bi bi-chevron-left" id="previous"></i></a>
+          <div id="currentPage">1</div>
+          <div>of</div>
+          <div id="lastPage">10</div>
+          <a href="#"><i class="bi bi-chevron-right" id="next"></i></a>
+        </div>
+      </nav>
     </div>
 
     <script src="apiKeys.js"></script>
     <script src="nprogress.js"></script>
     <script src="allNewsJs.js"></script>
-    
-</body>
+  </body>
 </html>
-
-
-                            
-                        

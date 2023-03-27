@@ -1,26 +1,23 @@
-NProgress.configure({easing: 'ease', speed: 800})
+NProgress.configure({ easing: "ease", speed: 800 });
 
-document.getElementById("dataToday").innerText = 
-document.getElementById("dataToday2").innerText = 
-new Date().toLocaleString(
-  "en-US",
-  {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-    timezone: "UTC",
-  }
-);
+document.getElementById("dataToday").innerText = document.getElementById(
+  "dataToday2"
+).innerText = new Date().toLocaleString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  weekday: "long",
+  timezone: "UTC",
+});
 
-// https://rapidapi.com/weatherbit/api/weather
-        // lat=${55.751244}&lon=${37.618423} Moscow
+// lat=${55.751244}&lon=${37.618423} Moscow
 
 function getWeather(lat, lon) {
   fetch(
     `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&days=1&key=${weatherApiKey}`,
     {
       method: "GET",
+      mode: "no-cors",
       headers: {
         "content-type": "application/json; charset=utf-8",
         "keep-alive": "timeout=5",
@@ -30,6 +27,7 @@ function getWeather(lat, lon) {
     .then((response) => response.json())
     .then((response) => {
       // console.log(response);
+
       document.getElementById("weather").style.opacity = "1";
       document.getElementById(
         "iconWeather"
@@ -46,121 +44,135 @@ function getWeather(lat, lon) {
 
 function weatherByIp(func) {
   fetch(
-  `http://ip-api.com/json/?fields=status,message,country,region,regionName,city,lat,lon`
+    `http://ip-api.com/json/?fields=status,message,country,region,regionName,city,lat,lon`
   )
-  .then((response) => response.json())
-  .then((response) => {
-    const lat = response.lat;
-    const lon = response.lon;
-    func(lat, lon);
-  })
-  .catch((err) => {
-    const lat = 55.751244;
-    const lon = 37.618423;
-    func(lat, lon);
-  });
+    .then((response) => response.json())
+    .then((response) => {
+      const lat = response.lat;
+      const lon = response.lon;
+      func(lat, lon);
+    })
+    .catch((err) => {
+      const lat = 55.751244;
+      const lon = 37.618423;
+      func(lat, lon);
+    });
 }
 
-weatherByIp(getWeather)
+weatherByIp(getWeather);
 
-function getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ) {
-  NProgress.start()
-    const newsUrl =
-      searchQ != ""
-        ? `https://newsdata.io/api/1/news?apikey=${newsApiKey}&q=${searchQ}&country=${currentCountry}&language=${language}&page=${currentPage}&category=${category}`
-        : `https://newsdata.io/api/1/news?apikey=${newsApiKey}&country=${currentCountry}&language=${language}&page=${currentPage}&category=${category}`;
-    console.log(newsUrl)
-      const allNews = fetch(newsUrl)
-      allNews
-      .then(response => response.json())
-      .then(response => {
-          console.log(response)
-          newsArr = []
-          document.getElementById("mainNews").replaceChildren()
+function getNews(
+  newsApiKey,
+  currentPage,
+  category,
+  currentCountry,
+  language,
+  searchQ
+) {
+  NProgress.start();
+  let newsUrl = `https://newsdata.io/api/1/news?apikey=${newsApiKey}&country=${currentCountry}&language=${language}&category=${category}`;
 
-          if (category == "Top") {
-            document.getElementById("categoryName").innerText = "Top News"
-          } else {
-            if (category == "World") {
-              document.getElementById("categoryName").innerText = "World News"
-            } else {
-              document.getElementById("categoryName").innerText = category
+  newsUrl = searchQ === "" ? newsUrl : `${newsUrl}&q=${searchQ}`;
+  newsUrl =
+    currentPage === 0 ? newsUrl : `${newsUrl}&page=${pages[currentPage - 1]}`;
+
+  // console.log(newsUrl)
+  // console.log(currentPage)
+
+  const allNews = fetch(newsUrl);
+  allNews
+    .then((response) => response.json())
+    .then((response) => {
+      // console.log(response)
+      pages[currentPage] = response.nextPage;
+      // console.log(pages)
+      newsArr = [];
+      document.getElementById("mainNews").replaceChildren();
+
+      if (category == "Top") {
+        document.getElementById("categoryName").innerText = "Top News";
+      } else {
+        if (category == "World") {
+          document.getElementById("categoryName").innerText = "World News";
+        } else {
+          document.getElementById("categoryName").innerText = category;
+        }
+      }
+
+      for (let i = 0; i < response.results.length; i++) {
+        newsArr[i] = document.createElement("div");
+        newsArr[i].className = "newsItem";
+        let newsData = document.createElement("p");
+        newsData.className = "newsData";
+        let newsData2 = document.createElement("p");
+        newsData2.className = "newsData2";
+        newsData.innerText = newsData2.innerText = new Date(
+          response.results[i].pubDate.replace(" ", "T")
+        ).toLocaleString("en-US", {
+          dateStyle: "medium",
+        });
+
+        let newsBlock = document.createElement("div");
+        newsBlock.className = "newsBlock";
+        let newsTitle = document.createElement("h2");
+        newsTitle.className = "newsTitle";
+        let newsTitleLink = document.createElement("a");
+        newsTitleLink.target = "_blank";
+        newsTitleLink.href =
+          response.results[i].link !== "null" ? response.results[i].link : "#";
+        newsTitleLink.innerText = response.results[i].title;
+        newsTitle.append(newsTitleLink);
+        let newsDescription = document.createElement("p");
+        newsDescription.className = "newsDescription";
+        newsDescription.innerText = response.results[i].description;
+
+        newsArr[i].append(newsData);
+        let newsImage = document.createElement("img");
+        newsImage.className = "newsImage";
+        if (response.results[i].image_url == null) {
+          newsImage.style.display = "none";
+        }
+        if (response.results[i].image_url !== null) {
+          newsBlock.append(newsImage);
+          newsImage.src = response.results[i].image_url;
+          newsImage.onload = () => {
+            if (newsImage.naturalWidth <= 240) {
+              newsImage.style.display = "none";
             }
-            }
+          };
+          newsImage.onerror = () => {
+            newsImage.style.display = "none";
+          };
+        }
 
-          for (let i = 0; i < response.results.length; i++) {
-            newsArr[i] = document.createElement('div')
-            newsArr[i].className = "newsItem"
-            let newsData = document.createElement('p')
-            newsData.className = "newsData"
-            let newsData2 = document.createElement('p')
-            newsData2.className = "newsData2"
-            newsData.innerText = newsData2.innerText = new Date(
-              response.results[i].pubDate.replace(" ", "T")
-            ).toLocaleString("en-US", {
-              dateStyle: "medium",
-            });
-            
-            let newsBlock = document.createElement('div')
-            newsBlock.className = "newsBlock"
-            let newsTitle = document.createElement('h2')
-            newsTitle.className = "newsTitle"
-            let newsTitleLink = document.createElement('a')
-            newsTitleLink.target = "_blank"
-            newsTitleLink.href = response.results[i].link !== "null" ? response.results[i].link : "#"
-            newsTitleLink.innerText = response.results[i].title
-            newsTitle.append(newsTitleLink)
-            let newsDescription = document.createElement('p')
-            newsDescription.className = "newsDescription"
-            newsDescription.innerText = response.results[i].description
+        newsBlock.append(newsTitle);
+        newsBlock.append(newsDescription);
+        newsBlock.append(newsData2);
+        newsArr[i].append(newsBlock);
 
-            newsArr[i].append(newsData)
-            let newsImage = document.createElement('img')
-            newsImage.className = "newsImage"
-            if (response.results[i].image_url == null) {
-              newsImage.style.display = "none"
-            }
-            if (response.results[i].image_url !== null) {
-              newsBlock.append(newsImage)
-              newsImage.src = response.results[i].image_url
-              newsImage.onload = () => {
-                if (newsImage.naturalWidth <= 240) {
-                  newsImage.style.display = "none"
-                }
-              }
-              newsImage.onerror = () => {
-                newsImage.style.display = "none"
-              }
-            }
+        document.getElementById("mainNews").append(newsArr[i]);
+      }
 
-            newsBlock.append(newsTitle)
-            newsBlock.append(newsDescription)
-            newsBlock.append(newsData2)
-            newsArr[i].append(newsBlock)
-            
-            document.getElementById("mainNews").append(newsArr[i])
-          }
-          
-          let lastPage = Math.ceil(response.totalResults / 10 )
-          if (currentPage == 0) {
-            document.getElementById("previous").style.display = "none"
-          } else {
-            document.getElementById("previous").style.display = "block"
-          }
-          if (currentPage + 1 == lastPage) {
-            document.getElementById("next").style.display = "none"
-          } else {
-            document.getElementById("next").style.display = "block"
-          }
-          document.getElementById("lastPage").innerText = lastPage
-          document.getElementById("currentPage").innerText = currentPage + 1
-      })
-      NProgress.done()
+      let lastPage = Math.ceil(response.totalResults / 10);
+      if (currentPage == 0) {
+        document.getElementById("previous").style.display = "none";
+      } else {
+        document.getElementById("previous").style.display = "block";
+      }
+      if (currentPage + 1 == lastPage) {
+        document.getElementById("next").style.display = "none";
+      } else {
+        document.getElementById("next").style.display = "block";
+      }
+      document.getElementById("lastPage").innerText = lastPage;
+      document.getElementById("currentPage").innerText = currentPage + 1;
+    });
+  NProgress.done();
 }
 
 const countryList = [
   [
-    "Countries", 
+    "Countries",
     "Russia",
     "U.S.",
     "Canada",
@@ -204,10 +216,11 @@ const categoryList = [
   "Entertainment",
   "Health",
   "Food",
-  "Sports"
-]
+  "Sports",
+];
 
 let currentPage = 0;
+let pages = [];
 let currentCountry = "ru,us,ca,gb,de";
 let category = "Top";
 let newsArr = [];
@@ -215,6 +228,7 @@ let language = "en";
 let searchQ = "";
 
 function initialization() {
+  pages = [];
   currentPage = 0;
   currentCountry = "ru,us,ca,gb,de";
   category = "Top";
@@ -227,7 +241,7 @@ function initialization() {
   getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ);
 }
 
-initialization()
+initialization();
 
 document.getElementById("topmenu").addEventListener("click", (el) => {
   if (categoryList.includes(el.target.innerText)) {
@@ -298,13 +312,15 @@ document.getElementById("pagination").addEventListener("click", (el) => {
 document.getElementById("search").addEventListener("click", () => {
   let searchText = document.getElementById("searchForm").value;
   searchQ = searchText.replace(/\s+/g, " ").trim().replaceAll(" ", "%20AND%20");
-  console.log(searchQ);
+  // console.log(searchQ);
+  pages = [];
   currentPage = 0;
   getNews(newsApiKey, currentPage, category, currentCountry, language, searchQ);
 });
 
-
-document.getElementById("ini").addEventListener("click", () => initialization())
+document
+  .getElementById("ini")
+  .addEventListener("click", () => initialization());
 
 document.getElementById("submenu").addEventListener("click", () => {
   if (
@@ -365,7 +381,6 @@ document.addEventListener("click", (el) => {
   }
 });
 
-
 document.getElementById("homeIcon").addEventListener("click", () => {
   if (!document.getElementById("topmenu").classList.contains("show")) {
     document.getElementById("topmenu").classList.toggle("show");
@@ -420,57 +435,3 @@ window.addEventListener("resize", (el) => {
     document.getElementById("submenuCountryContent").classList.remove("show");
   }
 });
-
-// document.addEventListener("click", (el) => {
-//   console.log(el.target.id)
-//   console.log(el.target)
-// })
-
-
-
-
-
-// document.getElementById("topmenu").addEventListener("click", (el) => {
-//   if (
-//     !countryList[0].includes(el.target.innerText) &&
-//     el.target.className !== "bi bi-caret-down-fill" &&
-//     el.target.innerText !== "Home"
-//   ) {
-//     category = el.target.innerText;
-//     currentPage = 0;
-//     searchQ = "";
-//     document.getElementById("searchForm").value = "";
-//     getNews(
-//       newsApiKey,
-//       currentPage,
-//       category,
-//       currentCountry,
-//       language,
-//       searchQ
-//     );
-//   }
-//   if (
-//     countryList[0].includes(el.target.innerText) &&
-//     el.target.id !== "submenuCountryBtn"
-//   ) {
-//     currentCountry =
-//       countryList[1][countryList[0].indexOf(el.target.innerText)];
-//     document.getElementById("submenuCountryBtn").innerHTML =
-//       el.target.innerText + `<i class="bi bi-caret-down-fill"></i>`;
-//     currentPage = 0;
-//     searchQ = "";
-//     document.getElementById("searchForm").value = "";
-//     language = currentCountry == "ru" ? "ru" : "en";
-//     getNews(
-//       newsApiKey,
-//       currentPage,
-//       category,
-//       currentCountry,
-//       language,
-//       searchQ
-//     );
-//   }
-//   if (el.target.innerText == "Home") {
-//     initialization();
-//   }
-// });
