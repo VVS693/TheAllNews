@@ -39,20 +39,20 @@ function getWeather(lat, lon) {
     .catch((err) => console.error(err));
 }
 
-function weatherByIp(func) {
+function weatherByIp(cb) {
   fetch(
-    `http://ip-api.com/json/?fields=status,message,country,region,regionName,city,lat,lon`
+    `https://api.ipgeolocation.io/ipgeo?apiKey=${geolocationByIpApiKey}&fields=geo`
   )
     .then((response) => response.json())
     .then((response) => {
-      const lat = response.lat;
-      const lon = response.lon;
-      func(lat, lon);
+      const lat = response.latitude;
+      const lon = response.longitude;
+      cb(lat, lon);
     })
     .catch((err) => {
       const lat = 55.751244;
       const lon = 37.618423;
-      func(lat, lon);
+      cb(lat, lon);
     });
 }
 
@@ -73,16 +73,11 @@ function getNews(
   newsUrl =
     currentPage === 0 ? newsUrl : `${newsUrl}&page=${pages[currentPage - 1]}`;
 
-  // console.log(newsUrl)
-  // console.log(currentPage)
-
   const allNews = fetch(newsUrl);
   allNews
     .then((response) => response.json())
     .then((response) => {
-      // console.log(response)
       pages[currentPage] = response.nextPage;
-      // console.log(pages)
       newsArr = [];
       document.getElementById("mainNews").replaceChildren();
 
