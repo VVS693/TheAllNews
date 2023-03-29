@@ -17,7 +17,6 @@ function getWeather(lat, lon) {
     `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&days=1&key=${weatherApiKey}`,
     {
       method: "GET",
-      mode: "no-cors",
       headers: {
         "content-type": "application/json; charset=utf-8",
         "keep-alive": "timeout=5",
@@ -26,8 +25,6 @@ function getWeather(lat, lon) {
   )
     .then((response) => response.json())
     .then((response) => {
-      // console.log(response);
-
       document.getElementById("weather").style.opacity = "1";
       document.getElementById(
         "iconWeather"
